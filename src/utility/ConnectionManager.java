@@ -8,6 +8,25 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionManager {
+	
+	public static Connection getConnection() throws ClassNotFoundException, SQLException, IOException
+	{
+		  Connection connection=null;
+		  Properties prop=null;
+		 
+			  prop=loadPropertiesFile();
+		 
+		   String  driver=prop.getProperty("driver");
+		   String url=prop.getProperty("url");
+		   String user=prop.getProperty("username");
+			String password=prop.getProperty("password");
+		  
+		
+				Class.forName(driver);
+				connection = DriverManager.getConnection(url,user,password);
+		
+			return connection;
+		}
 	public static Properties loadPropertiesFile() throws IOException
 	{
 		Properties prop = new Properties();
@@ -16,33 +35,4 @@ public class ConnectionManager {
 		in.close(); 
 		return prop;
 	}
-	
-	public static Connection getConnection()
-	{
-		  Connection connection=null;
-		  Properties prop=null;
-		  try
-		  {
-			  prop=loadPropertiesFile();
-		  }
-		  catch(Exception e1)
-		  {
-			  e1.printStackTrace();
-		  }
-		  final String  driver=prop.getProperty("driver");
-		  final String url=prop.getProperty("url");
-		  
-		  try {
-				Class.forName(driver);
-				connection = DriverManager.getConnection(url);
-			} 
-		  catch (SQLException e) {
-				
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				
-				e.printStackTrace();
-			}
-			return connection;
-		}
 	}
